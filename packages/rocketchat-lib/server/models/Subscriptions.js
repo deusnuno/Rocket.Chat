@@ -305,7 +305,8 @@ class ModelSubscriptions extends RocketChat.models._Base {
 			$set: {
 				name,
 				fname,
-				alert: true
+				alert: true,
+				groupChat: false
 			}
 		};
 
@@ -545,6 +546,15 @@ class ModelSubscriptions extends RocketChat.models._Base {
 		return this.update(query, update, { multi: true });
 	}
 
+	getUsernames(room, user) {
+		if (!room.usernames) {
+			return null;
+		}
+		return room.usernames.filter(function(u) {
+			return u !== user.username;
+		});
+	}
+
 	// INSERT
 	createWithRoomAndUser(room, user, extraData) {
 		const subscription = {
@@ -562,7 +572,9 @@ class ModelSubscriptions extends RocketChat.models._Base {
 				_id: user._id,
 				username: user.username,
 				name: user.name
-			}
+			},
+			usernames: this.getUsernames(room, user),
+			groupChat: room.groupChat
 		};
 
 		_.extend(subscription, extraData);

@@ -34,6 +34,15 @@ Template.roomList.helpers({
 		} else {
 			let types = [this.identifier];
 			const user = Meteor.user();
+			const orquery1 = [
+				{ alert: { $ne: true } },
+				{ hideUnreadStatus: true }
+			];
+			const orquery2 = [
+				{ $and: [{ t: 'p' }, { groupChat: true }] },
+				{ t: { $in: types } }
+			];
+			const check = RocketChat.getUserPreference(user, 'roomsListExhibitionMode') === 'unread';
 
 			if (this.identifier === 'activity') {
 				types = ['c', 'p', 'd'];
@@ -49,14 +58,23 @@ Template.roomList.helpers({
 				query.tokens = { $exists: false };
 			}
 
-			if (RocketChat.getUserPreference(user, 'roomsListExhibitionMode') === 'unread') {
-
-				query.$or = [
-					{alert: {$ne: true}},
-					{hideUnreadStatus: true}
+			if (check && this.identifier === 'd') {
+				query.$and = [
+					{ $or: orquery1 },
+					{ $or: orquery2 }
 				];
+			} else if (check) {
+				query.$or = orquery1;
+			} else if (this.identifier === 'd') {
+				query.$or = orquery2;
+			} else if (this.identifier === 'p') {
+				query.$and = [
+					{ $and: [{ t: 'p' }, { groupChat: false }] },
+					{ t: { $in: types } }
+				];
+			} else {
+				query.t = { $in: types };
 			}
-			query.t = {$in: types};
 			query.f = {$ne: favoritesEnabled};
 		}
 		if (this.identifier === 'activity') {

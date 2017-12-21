@@ -1,5 +1,5 @@
 RocketChat.TabBar.addButton({
-	groups: ['channel', 'group', 'direct'],
+	groups: ['channel', 'group', 'direct', 'groupchat'],
 	id: 'message-search',
 	i18nTitle: 'Search',
 	icon: 'magnifier',
@@ -17,7 +17,7 @@ RocketChat.TabBar.addButton({
 });
 
 RocketChat.TabBar.addButton({
-	groups: ['channel', 'group'],
+	groups: ['channel', 'group', 'groupchat'],
 	id: 'members-list',
 	i18nTitle: 'Members_List',
 	icon: 'team',
@@ -26,7 +26,7 @@ RocketChat.TabBar.addButton({
 });
 
 RocketChat.TabBar.addButton({
-	groups: ['channel', 'group', 'direct'],
+	groups: ['channel', 'group', 'direct', 'groupchat'],
 	id: 'uploaded-files-list',
 	i18nTitle: 'Room_uploaded_file_list',
 	icon: 'clip',
@@ -35,7 +35,7 @@ RocketChat.TabBar.addButton({
 });
 
 RocketChat.TabBar.addButton({
-	groups: ['channel', 'privategroup', 'directmessage'],
+	groups: ['channel', 'privategroup', 'directmessage', 'groupchat'],
 	id: 'keyboard-shortcut-list',
 	i18nTitle: 'Keyboard_Shortcuts_Title',
 	icon: 'keyboard',

@@ -387,7 +387,20 @@ Template.channelSettings.onCreated(function() {
 					}
 					return $('.channel-settings form [name=\'t\']').prop('checked', !!room.type === 'g');
 				} else {
-					return saveRoomSettings();
+					modal.open({
+						title: t('Room_history_clean'),
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#DD6B55',
+						confirmButtonText: t('Yes'),
+						cancelButtonText: t('Cancel'),
+						closeOnConfirm: true,
+						html: false
+					}, function(confirmed) {
+						if (confirmed) {
+							return saveRoomSettings();
+						}
+					});
 				}
 			}
 		},

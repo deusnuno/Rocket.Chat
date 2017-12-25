@@ -43,6 +43,12 @@ Template.roomList.helpers({
 				types = ['c', 'p'];
 			}
 
+			if (this.identifier === 'g') {
+				types = [];
+			} else if (this.identifier === 'd') {
+				types = ['d', 'g'];
+			}
+
 			if (this.identifier === 'tokens' && user && user.services && user.services.tokenpass) {
 				query.tokens = { $exists: true };
 			} else if (this.identifier === 'c' || this.identifier === 'p') {
@@ -82,6 +88,10 @@ Template.roomList.helpers({
 		or is favorite and has one room
 		or is unread and has one room
 		*/
+
+		if (group.identifier === 'g') {
+			return false;
+		}
 
 		return !['unread', 'f'].includes(group.identifier) || rooms.count();
 	},

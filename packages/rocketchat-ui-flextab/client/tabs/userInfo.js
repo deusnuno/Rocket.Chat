@@ -107,7 +107,19 @@ Template.userInfo.helpers({
 	},
 
 	canRemoveUser() {
-		return RocketChat.authz.hasAllPermission('remove-user', Session.get('openedRoom'));
+		const rid = Session.get('openedRoom');
+		const room = ChatRoom.findOne(rid);
+		const instance = Template.instance();
+		if (room.t === 'g') {
+			Meteor.call('getUsersOfRoom', rid, true, (error, users) => {
+				instance.numOfUsers.set(users.records.length);
+			});
+			if (instance.numOfUsers.get() <= 3) {
+				return false;
+			}
+		}
+
+		return RocketChat.authz.hasAllPermission('remove-user', rid);
 	},
 
 	canMuteUser() {
@@ -593,6 +605,7 @@ Template.userInfo.onCreated(function() {
 	this.loadingUserInfo = new ReactiveVar(true);
 	this.loadedUsername = new ReactiveVar;
 	this.tabBar = Template.currentData().tabBar;
+	this.numOfUsers = new ReactiveVar(0);
 
 	Meteor.setInterval(() => {
 		return this.now.set(moment());

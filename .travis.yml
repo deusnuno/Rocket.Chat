@@ -2,10 +2,10 @@ language: node_js
 services:
 - docker
 - mongodb
-branches:
-  only:
-  - develop
-  - "/^\\d+\\.\\d+\\.\\d+(-rc\\.\\d+)?$/"
+#branches:
+#  only:
+#  - develop
+#  - "/^\\d+\\.\\d+\\.\\d+(-rc\\.\\d+)?$/"
 git:
   depth: 1
 node_js:
@@ -67,23 +67,23 @@ script:
 - mongo meteor --eval 'db.dropDatabase()'
 - unset MONGO_OPLOG_URL
 - travis_retry npm test
-before_deploy:
-- source ".travis/setartname.sh"
-- source ".travis/setdeploydir.sh"
-- ".travis/setupsig.sh"
-- ".travis/namefiles.sh"
-- echo ".travis/sandstorm.sh"
-deploy:
-  - provider: s3
-    access_key_id: AKIAIKIA7H7D47KUHYCA
-    secret_access_key: "$ACCESSKEY"
-    bucket: download.rocket.chat
-    skip_cleanup: true
-    upload_dir: build
-    local_dir: "$ROCKET_DEPLOY_DIR"
-    on:
-      condition: "$TRAVIS_PULL_REQUEST=false"
-      all_branches: true
+#before_deploy:
+#- source ".travis/setartname.sh"
+#- source ".travis/setdeploydir.sh"
+#- ".travis/setupsig.sh"
+#- ".travis/namefiles.sh"
+#- echo ".travis/sandstorm.sh"
+#deploy:
+#  - provider: s3
+#    access_key_id: AKIAIKIA7H7D47KUHYCA
+#    secret_access_key: "$ACCESSKEY"
+#    bucket: download.rocket.chat
+#    skip_cleanup: true
+#    upload_dir: build
+#    local_dir: "$ROCKET_DEPLOY_DIR"
+#    on:
+#      condition: "$TRAVIS_PULL_REQUEST=false"
+#      all_branches: true
   # - provider: releases
   #   api-key: "$GITHUB_TOKEN"
   #   file_glob: true
@@ -92,10 +92,10 @@ deploy:
   #   on:
   #     tags: true
 
-after_deploy:
-- ".travis/docker.sh"
-- ".travis/update-releases.sh"
-- ".travis/snap.sh"
+#after_deploy:
+#- ".travis/docker.sh"
+#- ".travis/update-releases.sh"
+#- ".travis/snap.sh"
 env:
   global:
   - DISPLAY=:99.0
